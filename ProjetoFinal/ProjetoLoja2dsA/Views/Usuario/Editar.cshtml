@@ -1,0 +1,104 @@
+@model ProjetoLoja2dsA.Models.Usuario
+@{
+    ViewData["Title"] = "Editar informações";
+}
+
+<style>
+.editar-page {
+    min-height: calc(100vh - 68px);
+    display: flex; align-items: center; justify-content: center; padding: 40px 20px;
+}
+.editar-card {
+    width: clamp(320px, 90vw, 480px);
+    background: var(--clr-surface);
+    border: 1px solid rgba(139,92,246,.15);
+    border-radius: 24px; padding: 40px 36px;
+    box-shadow: 0 24px 64px rgba(0,0,0,.55);
+    animation: formPop .3s cubic-bezier(.16,.84,.36,1) both;
+}
+@@keyframes formPop {
+  from { opacity:0; transform:translateY(12px); }
+  to { opacity:1; transform:none; }
+}
+.editar-card h2 {
+    font-family: var(--ff-display); font-size: 1.5rem; font-weight: 800;
+    text-align: center; margin-bottom: 28px;
+}
+.editar-card .form-label {
+    display: block; font-size: .82rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .06em;
+    color: var(--clr-text-3); margin-bottom: 7px;
+}
+.editar-card .form-control {
+    width: 100%; padding: 13px 16px; border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04);
+    color: var(--clr-text); font-family: var(--ff-body); font-size: .95rem;
+    outline: none; transition: border-color .22s, box-shadow .22s;
+}
+.editar-card .form-control:focus {
+    border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,.2);
+    background: rgba(139,92,246,.05);
+}
+.editar-card .btn { border-radius: 999px; padding: 12px 20px; font-family: var(--ff-display); font-weight: 700; width: 100%; margin-top: 10px; }
+.editar-card .btn-primary {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    border: none; color: #fff; box-shadow: 0 8px 24px rgba(139,92,246,.35);
+}
+.editar-card .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(139,92,246,.5); }
+.editar-card .btn-outline-light {
+    background: transparent; border: 1px solid rgba(255,255,255,.15); color: #a09dc0;
+}
+.editar-card .btn-outline-light:hover { background: rgba(255,255,255,.05); color: #f0eefc; }
+.alert-success-custom {
+    background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.3);
+    border-radius: 12px; padding: 12px 16px; color: #86efac;
+    font-size: .88rem; margin-bottom: 20px; text-align: center;
+}
+.alert-error-custom {
+    background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3);
+    border-radius: 12px; padding: 12px 16px; color: #fc8181;
+    font-size: .88rem; margin-bottom: 20px; text-align: center;
+}
+</style>
+
+<div class="editar-page">
+    <div class="editar-card">
+        <h2><i class="bi bi-pen me-2" style="color:#8b5cf6;"></i>Editar Perfil</h2>
+
+        @if (TempData["MensagemSucesso"] != null)
+        {
+            <div class="alert-success-custom">✓ @TempData["MensagemSucesso"]</div>
+        }
+        @if (TempData["MensagemErro"] != null)
+        {
+            <div class="alert-error-custom">✗ @TempData["MensagemErro"]</div>
+        }
+
+        <form asp-action="Editar" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-4">
+                <label asp-for="Nome" class="form-label">Nome</label>
+                <input asp-for="Nome" class="form-control" placeholder="Seu nome completo" />
+                <span asp-validation-for="Nome" class="text-danger" style="font-size:.8rem;"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="Email" class="form-label">E-mail</label>
+                <input asp-for="Email" class="form-control" placeholder="seu@email.com" />
+                <span asp-validation-for="Email" class="text-danger" style="font-size:.8rem;"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="Senha" class="form-label">Nova Senha</label>
+                <input asp-for="Senha" class="form-control" type="password" placeholder="••••••••" />
+                <span asp-validation-for="Senha" class="text-danger" style="font-size:.8rem;"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-circle me-2"></i>Salvar alterações
+            </button>
+            <a asp-action="Perfil" class="btn btn-outline-light">
+                <i class="bi bi-x-circle me-2"></i>Cancelar
+            </a>
+        </form>
+    </div>
+</div>

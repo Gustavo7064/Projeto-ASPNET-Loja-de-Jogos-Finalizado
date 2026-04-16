@@ -1,0 +1,1073 @@
+﻿@{
+    ViewData["Title"] = "Jogos";
+}
+@using Microsoft.AspNetCore.Http
+
+@{
+    ViewData["Title"] = "Jogos";
+
+    // pega o ID do usuário da Session
+    var usuarioId = Context.Session.GetInt32("UsuarioId");
+
+    // se tiver ID, está logado
+    var usuarioLogado = usuarioId != null;
+}
+
+<link rel="stylesheet" href="~/css/sitedejogos.css" />
+
+<div class="dg-page" data-theme="dark">
+    <!-- Fundo criativo roxo -->
+    <div class="bg-blobs" aria-hidden="true">
+        <span class="blob b1"></span>
+        <span class="blob b2"></span>
+        <span class="blob b3"></span>
+    </div>
+
+
+
+
+    <!-- Hero compacto -->
+    <section class="hero mt-5">
+        <div class="hero-copy">
+            <h1>Catálogo RocketGames</h1>
+            <p>Seleção curada com descontos, lançamentos e clássicos indispensáveis.</p>
+            <div class="chip-row mt-4" id="chip-row" role="tablist" aria-label="Categorias rápidas">
+                <button class="chip is-active" data-genre="">Tudo</button>
+                <button class="chip" data-genre="Ação">Ação</button>
+                <button class="chip" data-genre="Aventura">Aventura</button>
+                <button class="chip" data-genre="RPG">RPG</button>
+                <button class="chip" data-genre="Tiro">Tiro</button>
+                <button class="chip" data-genre="Indie">Indie</button>
+                <button class="chip" data-genre="Luta">Luta</button>
+                <button class="chip" data-genre="Battle Royale">Battle Royale</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toolbar (filtros) -->
+    <header class="dg-toolbar" role="region" aria-label="Filtros e busca">
+        <div class="toolbar-left">
+            <div class="field search">
+                <input type="search" id="f-search" placeholder="Buscar por título..." autocomplete="off" />
+            </div>
+
+            <div class="field select">
+                <label for="f-genre">Gênero</label>
+                <select id="f-genre">
+                    <option value="">Todos</option>
+                    <option>Ação</option>
+                    <option>Aventura</option>
+                    <option>RPG</option>
+                    <option>Tiro</option>
+                    <option>Indie</option>
+                    <option>Luta</option>
+                    <option>Battle Royale</option>
+                </select>
+            </div>
+
+            <div class="field checkset" aria-label="Plataformas">
+                <span class="legend">Plataforma</span>
+                <label><input type="checkbox" class="f-platform" value="PC" checked> PC</label>
+                <label><input type="checkbox" class="f-platform" value="Xbox" checked> Xbox</label>
+                <label><input type="checkbox" class="f-platform" value="PlayStation" checked> PlayStation</label>
+            </div>
+        </div>
+
+        <div class="toolbar-right">
+            <div class="field range">
+                <label for="f-price">Preço até</label>
+                <input type="range" id="f-price" min="0" max="399" value="399" step="10" />
+                <span id="f-price-value">R$ 399,00</span>
+            </div>
+            <div class="field select">
+                <label for="f-sort">Ordenar</label>
+                <select id="f-sort">
+                    <option value="relevance">Relevância</option>
+                    <option value="price-asc">Preço: menor → maior</option>
+                    <option value="price-desc">Preço: maior → menor</option>
+                    <option value="name-asc">Nome: A → Z</option>
+                    <option value="rating-desc">Avaliação</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main class="dg-main">
+        <div class="list-head">
+            <h2>Jogos Disponíveis</h2>
+            <span class="count" id="count">0 resultados</span>
+        </div>
+
+        <!-- GRID DE JOGOS -->
+        <section id="games-grid" class="dg-grid" aria-live="polite">
+            <!-- Cards -->
+            <article class="game-card"
+                     data-name="The Last of Us Part I"
+                     data-genre="Ação"
+                     data-platforms="PC,PlayStation"
+                     data-price="249.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/thelastofus1.jpg" alt="" loading="lazy" />
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">The Last of Us Part I</h3>
+                    <p class="meta">Ação • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 249,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('The Last of Us Part I', 249.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <!-- Minecraft (não está na Steam – deixado como estava) -->
+            <article class="game-card"
+                     data-name="Minecraft"
+                     data-genre="Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="89.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/minecraft.webp" alt="Minecraft" loading="lazy" />
+                    <span class="badge">-10%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Minecraft</h3>
+                    <p class="meta">Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 89,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Minecraft', 89.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Assassin´s Creed 4"
+                     data-genre="Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="89.99"
+                     data-rating="4.4">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="~/pastafotos/assasinscreed4.jpg" alt="Assassins Creed 4" loading="lazy" />
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Assassin´s Creed 4</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 89,99</span></div>
+                    <div class="stars" aria-label="Avaliação 4.4 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Assassin´s Creed 4', 89.99) ">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="God of War 4"
+                     data-genre=" Ação, Aventura"
+                     data-platforms="PC,PlayStation,Xbox"
+                     data-price="199.90"
+                     data-rating="4.7">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/godofwar4.jpg" alt="" loading="lazy" />
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">God of War 4</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 199,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.7 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('God of War 4', 199.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Crash Bandicoot 4: It's About Time"
+                     data-genre="Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="219.90"
+                     data-rating="4.5">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/crash4.jpg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Crash Bandicoot 4</h3>
+                    <p class="meta">Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 219,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.5 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Crash Bandicoot 4', 219.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Diablo IV"
+                     data-genre="RPG"
+                     data-platforms="PC,PlayStation"
+                     data-price="349.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/diablo4.jpg" alt="" loading="lazy" />
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Diablo IV</h3>
+                    <p class="meta">RPG • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 349,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Diablo IV', 349.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="The Sims 4"
+                     data-platforms="PC,PlayStation,Xbox"
+                     data-price="0"
+                     data-rating="4.3">
+                <div class="thumb">
+                    <img src="/pastafotos/thesims4.jpg" alt="The Sims 4" loading="lazy" />
+                    <span class="badge">-15%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">The Sims 4</h3>
+                    <p class="meta">PC, PlayStation, Xbox</p>
+                    <div class="price"><span class="current">Grátis</span></div>
+                    <div class="stars" aria-label="Avaliação 4.3 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('The Sims 4', 0.0)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="The Witcher 3: Wild Hunt"
+                     data-genre="RPG"
+                     data-platforms="PC,PlayStation"
+                     data-price="129.99"
+                     data-rating="4.9">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/thewitcher3.jpg" alt="The Witcher 3: Wild Hunt" loading="lazy" />
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">The Witcher 3:Wild Hunt</h3>
+                    <p class="meta">RPG • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 129,99</span></div>
+                    <div class="stars" aria-label="Avaliação 4.9 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('The Witcher', 129.99)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <!-- Final Fantasy XVI (PC na Steam só se disponível; mantido como estava) -->
+            <article class="game-card"
+                     data-name="Final Fantasy XVI"
+                     data-genre="Ação"
+                     data-platforms="PC,PlayStation"
+                     data-price="215.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/finalfantasy16.jpg" alt="" loading="lazy" />
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Final Fantasy XVI</h3>
+                    <p class="meta">Ação • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 215,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Final Fantasy XVI', 215.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="GTA V"
+                     data-genre="Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="99.90"
+                     data-rating="3.8">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/GTA5.png" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">GTA V</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 99,90</span></div>
+                    <div class="stars" aria-label="Avaliação 3.8 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('GTA V', 99.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Hollow Knight"
+                     data-genre="Ação, RPG"
+                     data-platforms="PC,PlayStation"
+                     data-price="46.99"
+                     data-rating="4.8">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/hollownight.jpg" alt="" loading="lazy" />
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Hollow Knight</h3>
+                    <p class="meta">Ação e RPG • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 46,99</span></div>
+                    <div class="stars" aria-label="Avaliação 4.8 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick=" adicionarAoCarrinho('Hollow Knight', 46.99)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Resident Evil 2 - Remastered"
+                     data-genre=" Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="199.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/residentevil2.jpg" alt="" loading="lazy" />
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Resident Evil 2 - Remastered</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 199,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Resident Evil 2 - Remastered', 199.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Life is Strange"
+                     data-genre="Aventura, Indie"
+                     data-platforms="PC,PlayStation"
+                     data-price="36.99"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/lifeisstrangeee.jpeg" alt="" loading="lazy" />
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Life is Strange</h3>
+                    <p class="meta">Ação • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 36,99</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Life is Strange', 36.99)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Red Dead Redemption 2"
+                     data-genre=" Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="299.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/reddeadredemption2.jpg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Red Dead Redemption 2</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 299,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Red Dead Redemption 2', 299.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <!-- The Last of Us 2 (não na Steam – mantido) -->
+            <article class="game-card"
+                     data-name="The Last of Us 2"
+                     data-genre=" Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="249.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/thelastofus2.png" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">The Last of Us 2</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 249,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('The Last of Us Part 2', 249.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <!-- “Mortal Kombat 12” (nome divergente; MK1 é Steam, mantive) -->
+            <article class="game-card"
+                     data-name="Mortal Kombat 12"
+                     data-genre="Luta"
+                     data-platforms="PC,PlayStation"
+                     data-price="299.99"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/mortalkombat12.jpg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Mortal Kombat 12 </h3>
+                    <p class="meta">Ação • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 299,99</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Mortal Kombat 12', 299.90)" >Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Watch dogs"
+                     data-genre="Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="79.99"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/watchdogs1.jpg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Watch dogs</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 79,99</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Watch Dogs', 79.99)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <!-- Spider-Man Remastered (na Steam) -->
+            <article class="game-card"
+                     data-name="Homem Aranha"
+                     data-genre="Ação, Aventura, RPG"
+                     data-platforms="PC,PlayStation"
+                     data-price="229.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/homemaranha.webp" alt="" loading="lazy" />
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Homem Aranha</h3>
+                    <p class="meta">Ação, Aventura e RPG • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 229,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Homem Aranha', 229.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Resident Evil 4"
+                     data-genre=" Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="249.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/residentevil4.jpg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Resident Evil 4</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 249,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Resident Evil', 249.00)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <!-- God of War 3 (sem Steam) -->
+            <article class="game-card"
+                     data-name="God of War 3"
+                     data-genre=" Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="199.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/godofwar3.webp" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">God of War 3</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 199,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('God of War 3', 199.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Mortal Kombat 11"
+                     data-genre="Luta"
+                     data-platforms="PC,PlayStation"
+                     data-price="199.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/mortalkombat11.jpg" alt="Mortal Kombat 11" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Mortal Kombat 11</h3>
+                    <p class="meta">Luta • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 199,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Mortal Kombat 11', 199.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <!-- Fortnite (não está na Steam) -->
+            <article class="game-card"
+                     data-name="Fortnite"
+                     data-genre="Battle Royale"
+                     data-platforms="PC,PlayStation"
+                     data-price="0"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/fortnitee.png" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Fortnite</h3>
+                    <p class="meta">Battle Royale • PC, PlayStation</p>
+                    <div class="price"><span class="current">Grátis</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Fortnite', 0.0)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Life is Strange 2"
+                     data-genre="Aventura, Indie"
+                     data-platforms="PC,PlayStation"
+                     data-price="114.99"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/lifeisstrange2.png" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Life is Strange 2</h3>
+                    <p class="meta">Aventura e Indie • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 114,99</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Life is Strange 2', 114.99)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Resident Evil 3"
+                     data-genre=" Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="199.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/residentevil3.jpg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Resident Evil 3</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 199,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Resident Evil 3', 199.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <!-- BattleField 6 (nome divergente; mantido) -->
+            <article class="game-card"
+                     data-name="BattleField 6"
+                     data-genre="Ação ,Tiro"
+                     data-platforms="PC,PlayStation"
+                     data-price="199.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/battlefield 6.jpg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">  BattleField 6</h3>
+                    <p class="meta">Ação e Tiro • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 199,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('BattleField 6', 199.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Counter Strike 2"
+                     data-genre="Tiro"
+                     data-platforms="PC,PlayStation"
+                     data-price="0"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/counterstrikeee2.webp" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Counter Strike 2 </h3>
+                    <p class="meta">Tiro • PC, PlayStation</p>
+                    <div class="price"><span class="current">Grátis</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Counter Strike 2', 0.0)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Little Nightmares"
+                     data-genre="Aventura,Terror"
+                     data-platforms="PC,PlayStation"
+                     data-price="47.49"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/littlenightmaresss.webp" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Little Nightmares</h3>
+                    <p class="meta">Aventura e Terror • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 47,49</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Little Nightmares', 47.49)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Dead by Daylight"
+                     data-genre="Terror"
+                     data-platforms="PC,PlayStation"
+                     data-price="72.99"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/deadbydaylighthh.jpg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Dead by Daylight</h3>
+                    <p class="meta">Terror • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 72,99</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Dead by Daylight', 72.99)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="The Outlast Trials"
+                     data-genre="Terror"
+                     data-platforms="PC,PlayStation"
+                     data-price="147.99"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/theoutlasttrialsss.webp" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">The Outlast Trials</h3>
+                    <p class="meta">Terror • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 147,99</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('The Outlast Trials ', 147.99)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="WatchDogs 2"
+                     data-genre="Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="249.00"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/watchdogss2.jpg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">WatchDogs 2</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 249,00</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('WatchDogs 2', 249.00)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <!-- The Sims 3 (na Steam depende/varia; mantido) -->
+            <article class="game-card"
+                     data-name="The Sims 3"
+                     data-platforms="PC,PlayStation"
+                     data-price="199.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/thesims3.webp" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">The Sims 3</h3>
+                    <p class="meta">PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 199,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('The Sims 3', 199.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <!-- Miles Morales (na Steam) -->
+            <article class="game-card"
+                     data-name="Homem Aranha : Miles Morales"
+                     data-genre=" Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="199.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/homemaranhamiless.png" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Homem Aranha : Miles Morales</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 199,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Homem Aranha : Miles Morales', 199.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="The Walking Dead"
+                     data-genre="Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="37.99"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/thewalkingdead.jpeg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">The Walking Dead</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 37,99</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('The Walking Dead', 37.99)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Stardew Valley"
+                     data-genre="Indie"
+                     data-platforms="PC,PlayStation"
+                     data-price="24.99"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/stardewvalley.jpg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Stardew Valley</h3>
+                    <p class="meta">Indie • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 24,99</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Stardew Valley', 24.99)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Cyberpunk"
+                     data-genre="Ação, Aventura, RPG"
+                     data-platforms="PC,PlayStation"
+                     data-price="199.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/cyberpunk.jpg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Cyberpunk</h3>
+                    <p class="meta">Ação, Aventura e RPG • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 199,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('CyberPunk', 199.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Alien Isolation"
+                     data-genre="Terror"
+                     data-platforms="PC,PlayStation"
+                     data-price="91.99"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/alienisolation.jpeg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Alien Isolation</h3>
+                    <p class="meta">Terror • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 91,99</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Alien Isolation', 91.99)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="It Takes Two"
+                     data-genre="Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="199.00"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/ittakestwo.jpeg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">It Takes Two</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 199,00</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('It Takes Two', 199.00)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Elden Ring"
+                     data-genre="Ação, RPG"
+                     data-platforms="PC,PlayStation"
+                     data-price="249.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/eldenringg.jpg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Elden Ring</h3>
+                    <p class="meta">Ação e RPG • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 249,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Elden Ring', 249.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Resident Evil"
+                     data-genre="Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="79.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/residentevil7.webp" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Resident Evil</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 79,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Resident Evil 7', 79.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="The Quarry"
+                     data-genre="Terror"
+                     data-platforms="PC,PlayStation"
+                     data-price="299.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/pastafotos/the quaryy.jpg" alt="" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">The Quarry</h3>
+                    <p class="meta">Terror • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 299,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('The Quarry', 299.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+                        <article class="game-card"
+                     data-name="Resident Resident Evil 5"
+                     data-genre=" Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="299.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/fotopaginainicial/residentevil5.jpg" alt="Resident Evil 5" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Resident Evil 5</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 299,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Red Dead Redemption 2', 299.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+                        <article class="game-card"
+                     data-name="Diablo 3"
+                     data-genre=" Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="299.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/fotopaginainicial/DiabloIIIcover.jpg" alt="diablo3" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Diablo 3</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 299,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Red Dead Redemption 2', 299.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+                        <article class="game-card"
+                     data-name="Diablo 2"
+                     data-genre=" Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="299.90"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/fotopaginainicial/Diablo_II_Coverart.png" alt="diablo2" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Diablo 2</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 299,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Red Dead Redemption 2', 299.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+
+            <article class="game-card"
+                     data-name="Diablo"
+                     data-genre=" Ação, Aventura"
+                     data-platforms="PC,PlayStation"
+                     data-price="249.00"
+                     data-rating="4.6">
+                <div class="thumb">
+                    <img class="imagens-jogos" src="/fotopaginainicial/Diablo_PC_capa.jpg" alt="Diablo" loading="lazy" />
+                    <span class="badge">-20%</span>
+                    <button class="wish" aria-label="Favoritar">♡</button>
+                </div>
+                <div class="info">
+                    <h3 class="title">Diablo</h3>
+                    <p class="meta">Ação e Aventura • PC, PlayStation</p>
+                    <div class="price"><span class="current">R$ 299,90</span></div>
+                    <div class="stars" aria-label="Avaliação 4.6 de 5">
+                        <i></i><i></i><i></i><i></i><i class="half"></i>
+                    </div>
+                    <button class="btn add-cart" onclick="adicionarAoCarrinho('Red Dead Redemption 2', 299.90)">Adicionar ao carrinho</button>
+                </div>
+            </article>
+        </section>
+    </main>
+</div>
+
+<script src="~/js/carrinho.js"></script>

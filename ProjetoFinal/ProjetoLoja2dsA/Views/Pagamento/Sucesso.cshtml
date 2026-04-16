@@ -1,0 +1,58 @@
+@{
+    ViewData["Title"] = "Compra Confirmada!";
+}
+
+<style>
+.sucesso-page {
+    min-height: calc(100vh - 68px);
+    display: flex; align-items: center; justify-content: center; padding: 40px 20px;
+}
+.sucesso-card {
+    text-align: center; max-width: 480px; width: 100%;
+    background: var(--clr-surface);
+    border: 1px solid rgba(34,197,94,.2);
+    border-radius: 28px; padding: 52px 40px;
+    box-shadow: 0 24px 64px rgba(0,0,0,.5), 0 0 40px rgba(34,197,94,.06);
+    animation: formPop .4s cubic-bezier(.16,.84,.36,1) both;
+}
+@@keyframes formPop { from { opacity:0; transform:translateY(16px) scale(.97); } to { opacity:1; transform:none; } }
+.sucesso-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; margin: 0 auto 24px;
+    box-shadow: 0 0 40px rgba(34,197,94,.4);
+    animation: pulse 2s ease-in-out infinite;
+}
+@@keyframes pulse { 0%,100% { box-shadow: 0 0 30px rgba(34,197,94,.3); } 50% { box-shadow: 0 0 60px rgba(34,197,94,.6); } }
+.sucesso-card h2 {
+    font-family: var(--ff-display); font-size: 1.8rem; font-weight: 800; margin-bottom: 10px;
+}
+.sucesso-card p { color: var(--clr-text-2); line-height: 1.7; margin-bottom: 6px; font-size: .98rem; }
+.sucesso-msg { color: #86efac !important; font-weight: 600; }
+.sucesso-card .btn-voltar {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 28px; padding: 12px 32px; border-radius: var(--radius-full);
+    background: linear-gradient(135deg, var(--clr-accent), var(--clr-accent-2));
+    color: #fff; font-weight: 700; font-family: var(--ff-display);
+    text-decoration: none; box-shadow: var(--shadow-accent);
+    transition: all var(--transition);
+}
+.sucesso-card .btn-voltar:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(139,92,246,.5); }
+</style>
+
+<div class="sucesso-page">
+    <div class="sucesso-card">
+        <div class="sucesso-icon">✓</div>
+        <h2>Compra Confirmada! 🎮</h2>
+        <p>Obrigado pela sua compra na RocketGames.</p>
+        <p>Seus jogos já estão disponíveis na sua biblioteca.</p>
+        @if (TempData["Mensagem"] != null)
+        {
+            <p class="sucesso-msg">@TempData["Mensagem"]</p>
+        }
+        <a asp-controller="Home" asp-action="Index" class="btn-voltar">
+            <i class="bi bi-house"></i>Voltar para a loja
+        </a>
+    </div>
+</div>

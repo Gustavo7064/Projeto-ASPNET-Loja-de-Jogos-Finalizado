@@ -1,0 +1,117 @@
+@model ProjetoLoja2dsA.Models.PagamentoViewModel
+@{
+    ViewData["Title"] = "Pagamento";
+}
+
+<style>
+.pagamento-page {
+    min-height: calc(100vh - 68px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 40px 20px;
+}
+.pagamento-card {
+    width: clamp(320px, 90vw, 520px);
+    background: var(--clr-surface);
+    border: 1px solid rgba(139,92,246,.15);
+    border-radius: 24px; padding: 40px 36px;
+    box-shadow: 0 24px 64px rgba(0,0,0,.55);
+    animation: formPop .3s cubic-bezier(.16,.84,.36,1) both;
+}
+@@keyframes formPop { 
+  from { opacity:0; transform:translateY(12px); } 
+  to { opacity:1; transform:none; } 
+}
+.pagamento-subtitle { text-align: center; color: var(--clr-text-2); font-size: .9rem; margin-bottom: 28px; }
+.pagamento-card .form-label {
+    font-size: .82rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--clr-text-3); margin-bottom: 7px;
+}
+.pagamento-card .form-control {
+    width: 100%; padding: 13px 16px; border-radius: var(--radius-md);
+    border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04);
+    color: var(--clr-text); font-family: var(--ff-body); font-size: .95rem;
+    outline: none; transition: border-color var(--transition), box-shadow var(--transition);
+}
+.pagamento-card .form-control:focus {
+    border-color: var(--clr-accent); box-shadow: 0 0 0 3px rgba(139,92,246,.2);
+    background: rgba(139,92,246,.05);
+}
+.pagamento-card .form-control[readonly] {
+    background: rgba(139,92,246,.06); border-color: rgba(139,92,246,.2);
+    color: var(--clr-neon); font-weight: 700;
+}
+.pagamento-card .btn-submit {
+    width: 100%; padding: 14px; border-radius: var(--radius-full);
+    border: none; background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff; font-family: var(--ff-display); font-size: .95rem; font-weight: 700;
+    cursor: pointer; margin-top: 8px;
+    box-shadow: 0 8px 24px rgba(34,197,94,.3);
+    transition: all var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.pagamento-card .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(34,197,94,.45); }
+.card-icons { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
+.card-icon-pill {
+    padding: 6px 14px; border-radius: var(--radius-sm);
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08);
+    font-size: .78rem; font-weight: 700; color: var(--clr-text-2);
+}
+</style>
+
+<div class="pagamento-page">
+    <div class="pagamento-card">
+        <h2 class="pagamento-title">
+            <i class="bi bi-credit-card me-2" style="color:var(--clr-accent);"></i>Pagamento
+        </h2>
+        <p class="pagamento-subtitle">Seus dados são protegidos com criptografia</p>
+
+        <div class="card-icons">
+            <span class="card-icon-pill">💳 Visa</span>
+            <span class="card-icon-pill">💳 Master</span>
+            <span class="card-icon-pill">🔒 3x sem juros</span>
+        </div>
+
+        <form asp-action="FazerPagamento" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-4">
+                <label asp-for="NomeCompleto" class="form-label"></label>
+                <input asp-for="NomeCompleto" class="form-control" placeholder="Nome como no cartão" />
+                <span asp-validation-for="NomeCompleto" class="text-danger" style="font-size:.8rem;"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="NumeroCartao" class="form-label"></label>
+                <input asp-for="NumeroCartao" class="form-control" placeholder="0000 0000 0000 0000" />
+                <span asp-validation-for="NumeroCartao" class="text-danger" style="font-size:.8rem;"></span>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-6">
+                    <label asp-for="Validade" class="form-label"></label>
+                    <input asp-for="Validade" class="form-control" placeholder="MM/AA" />
+                    <span asp-validation-for="Validade" class="text-danger" style="font-size:.8rem;"></span>
+                </div>
+                <div class="col-6">
+                    <label asp-for="CVV" class="form-label"></label>
+                    <input asp-for="CVV" class="form-control" placeholder="•••" />
+                    <span asp-validation-for="CVV" class="text-danger" style="font-size:.8rem;"></span>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Valor" class="form-label">Valor Total</label>
+                <input asp-for="Valor" class="form-control" readonly />
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="bi bi-shield-check"></i>Finalizar Pagamento
+            </button>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mt-3" style="font-size:.85rem;"></div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

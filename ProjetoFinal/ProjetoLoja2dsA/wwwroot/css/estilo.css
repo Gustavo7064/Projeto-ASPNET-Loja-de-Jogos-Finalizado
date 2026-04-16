@@ -1,0 +1,156 @@
+/* ================================================================
+   ROCKETGAMES — estilo.css  (Login, forms globais)
+   ================================================================ */
+
+/* Fundo para páginas de form */
+body {
+  background: var(--clr-bg);
+  background-image:
+    radial-gradient(ellipse 800px 600px at 15% 10%, rgba(76,29,149,.22) 0%, transparent 65%),
+    radial-gradient(ellipse 600px 500px at 85% 90%, rgba(109,40,217,.14) 0%, transparent 65%);
+  padding-top: 0;
+  margin: 0 !important;
+}
+
+/* ── Página de Auth ── */
+.auth-page {
+  min-height: calc(100vh - 68px);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 40px 20px;
+}
+.auth-title {
+  font-family: var(--ff-display);
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 800;
+  text-align: center;
+  color: var(--clr-text);
+  margin-bottom: 28px;
+  letter-spacing: -.02em;
+}
+.auth-title span { color: var(--clr-accent); }
+
+/* Card do form */
+.login-form,
+form.form-auth {
+  width: clamp(320px, 90vw, 480px);
+  background: var(--clr-surface);
+  border: 1px solid rgba(139,92,246,.15);
+  border-radius: 24px;
+  padding: 40px 36px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.55), 0 0 0 1px rgba(139,92,246,.05);
+  animation: formPop .3s cubic-bezier(.16,.84,.36,1) both;
+}
+@keyframes formPop {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.form-group { margin-bottom: 20px; }
+.form-group label, label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--clr-text-2);
+  margin-bottom: 8px;
+  letter-spacing: .02em;
+  text-shadow: none;
+}
+
+.form-control,
+.formemail1-control,
+.formsenha1-control {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.04);
+  color: var(--clr-text);
+  font-family: var(--ff-body);
+  font-size: .95rem;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  -webkit-appearance: none;
+}
+.form-control::placeholder,
+.formemail1-control::placeholder,
+.formsenha1-control::placeholder { color: var(--clr-text-3); }
+.form-control:focus,
+.formemail1-control:focus,
+.formsenha1-control:focus {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 0 3px rgba(139,92,246,.2);
+  background: rgba(139,92,246,.05);
+}
+
+/* Submit button */
+#botao, button[type="submit"],
+.login-form button, form button[type="submit"] {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: linear-gradient(135deg, var(--clr-accent), var(--clr-accent-2));
+  color: #fff;
+  font-family: var(--ff-display);
+  font-size: .95rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: var(--shadow-accent);
+  transition: all var(--transition);
+}
+#botao:hover, button[type="submit"]:hover,
+.login-form button:hover, form button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px rgba(139,92,246,.5);
+}
+
+/* Botão secundário */
+#botao2, .cadastrar {
+  width: 100%; padding: 13px 20px; margin-top: 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(139,92,246,.35);
+  background: transparent; color: var(--clr-neon);
+  font-family: var(--ff-body); font-size: .9rem; font-weight: 600;
+  cursor: pointer; transition: all var(--transition);
+}
+#botao2:hover, .cadastrar:hover { background: rgba(139,92,246,.1); border-color: var(--clr-accent); }
+
+/* Link abaixo */
+.link-abaixo {
+  text-align: center; margin-top: 20px;
+  font-size: .88rem; color: var(--clr-text-3);
+}
+.link-abaixo a {
+  color: var(--clr-neon); font-weight: 600;
+  text-decoration: none; transition: color var(--transition);
+}
+.link-abaixo a:hover { color: #fff; }
+
+/* Título cadastro */
+.cadastrarh1 h1, .login-title {
+  font-family: var(--ff-display);
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 800;
+  text-align: center;
+  color: var(--clr-text);
+  margin-bottom: 28px;
+  letter-spacing: -.02em;
+  margin-top: 40px;
+  text-shadow: none;
+}
+
+/* Error messages */
+.text-danger { color: #fc8181; font-size: .82rem; margin-top: 4px; display: block; }
+
+/* Navbar overrides específicos de form pages */
+.navbar.bg-white, .navbar.border-bottom { border-bottom: none !important; box-shadow: none !important; background: rgba(6,6,15,.92) !important; }
+.navbar .navbar-brand, .navbar .nav-link { color: var(--clr-text-2) !important; }
+footer.border-top, .footer.border-top { border-top: 1px solid rgba(255,255,255,.06) !important; }
+.navbar { background-color: rgba(6,6,15,.92) !important; color: var(--clr-text) !important; }
+
+/* Div groups (cadastro) */
+.div1-group, .div2-group { margin-bottom: 20px; }
+.div1-group label, .div2-group label { display: block; font-size: .85rem; font-weight: 600; color: var(--clr-text-2); margin-bottom: 8px; text-shadow: none; }

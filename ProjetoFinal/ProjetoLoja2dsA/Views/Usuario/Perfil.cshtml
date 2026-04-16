@@ -1,0 +1,106 @@
+@{
+    ViewData["Title"] = "Meu perfil";
+}
+
+<link rel="stylesheet" href="~/css/Perfil.css" asp-append-version="true" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<div class="perfil-root">
+    <div class="container perfil-container">
+
+        <!-- TOPO / CABEÇALHO -->
+        <div class="perfil-header">
+            <div class="perfil-user-info">
+                <div class="perfil-avatar-ring">
+                    <img src="@ViewBag.Foto" alt="Foto do usuário" class="perfil-avatar-img" />
+                </div>
+                <div class="perfil-header-text">
+                    <h1 class="perfil-username">@ViewBag.Nome</h1>
+                    <p class="perfil-subtitle">Jogador RocketGames</p>
+                    <span class="perfil-status-pill">
+                        <span class="perfil-status-dot"></span>
+                        Online
+                    </span>
+                </div>
+            </div>
+
+            <form asp-controller="Usuario" asp-action="Logout" method="post">
+                <button type="submit" class="btn-perfil-outline">
+                    <i class="fa-solid fa-right-from-bracket me-1"></i> Sair
+                </button>
+            </form>
+        </div>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <div class="perfil-content">
+
+            <!-- DADOS DA CONTA -->
+            <div class="perfil-card perfil-card-main">
+                <div class="perfil-card-header">
+                    <i class="fa-solid fa-user-gear me-2"></i>
+                    <span>Dados da conta</span>
+                </div>
+                <div class="perfil-card-body">
+                    <div class="perfil-field">
+                        <span class="perfil-field-label">Nome completo</span>
+                        <span class="perfil-field-value">@ViewBag.Nome</span>
+                    </div>
+                    <div class="perfil-field">
+                        <span class="perfil-field-label">E-mail</span>
+                        <span class="perfil-field-value">@ViewBag.Email</span>
+                    </div>
+                    <div class="perfil-field">
+                        <span class="perfil-field-label">Tipo de conta</span>
+                        <span class="perfil-field-value">Padrão</span>
+                    </div>
+                    <div class="perfil-field">
+                        <span class="perfil-field-label">Status</span>
+                        <span class="perfil-meta-badge">Ativa</span>
+                    </div>
+                    <div class="perfil-actions">
+                        <a class="btn-perfil-primary"
+                           asp-controller="Usuario"
+                           asp-action="Editar">
+                            <i class="fa-solid fa-pen-to-square me-1"></i>
+                            Editar informações
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRID: SEGURANÇA + EXPERIÊNCIA -->
+            <div class="perfil-bottom-grid">
+                <div class="perfil-card">
+                    <div class="perfil-card-header">
+                        <i class="fa-solid fa-shield-halved me-2"></i>
+                        <span>Segurança</span>
+                    </div>
+                    <div class="perfil-card-body">
+                        <p class="perfil-text">
+                            Mantenha sua conta segura. Nunca compartilhe sua senha com outras pessoas
+                            e evite usar a mesma senha em outros sites.
+                        </p>
+                        <a asp-controller="Usuario" asp-action="Editar" class="perfil-link">
+                            Alterar senha →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="perfil-card">
+                    <div class="perfil-card-header">
+                        <i class="fa-solid fa-gamepad me-2"></i>
+                        <span>Sua experiência</span>
+                    </div>
+                    <div class="perfil-card-body">
+                        <p class="perfil-text">
+                            Em breve você poderá ver aqui seu histórico de compras, lista de desejos,
+                            progresso em jogos e muito mais.
+                        </p>
+                        <span class="perfil-tag">Em desenvolvimento</span>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /perfil-content -->
+    </div>
+</div>

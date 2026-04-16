@@ -1,0 +1,75 @@
+@model ProjetoLoja2dsA.Models.Produto
+@{
+    ViewData["Title"] = "Cadastro de Jogo";
+    Layout = "_Layout";
+}
+
+<style>
+.cadastro-prod-page { min-height: calc(100vh - 68px); display: flex; align-items: flex-start; justify-content: center; padding: 48px 20px; }
+.cadastro-prod-card {
+    width: clamp(320px, 90vw, 560px);
+    background: var(--clr-surface); border: 1px solid rgba(139,92,246,.15);
+    border-radius: 24px; padding: 40px 36px;
+    box-shadow: 0 24px 64px rgba(0,0,0,.55);
+}
+.cadastro-prod-card h1 { font-family: var(--ff-display); font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; }
+.cadastro-prod-card .subtitle { color: var(--clr-text-2); font-size: .88rem; margin-bottom: 28px; }
+.cadastro-prod-card .form-label {
+    display: block; font-size: .82rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .06em; color: var(--clr-text-3); margin-bottom: 7px;
+}
+.cadastro-prod-card .form-control {
+    width: 100%; padding: 13px 16px; border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04);
+    color: var(--clr-text); font-family: var(--ff-body); font-size: .95rem;
+    outline: none; resize: vertical; transition: border-color .22s, box-shadow .22s;
+}
+.cadastro-prod-card .form-control:focus {
+    border-color: #8b5cf6; box-shadow: 0 0 0 3px rgba(139,92,246,.2); background: rgba(139,92,246,.05);
+}
+.cadastro-prod-card .btn { border-radius: 999px; padding: 12px 24px; font-family: var(--ff-display); font-weight: 700; }
+.cadastro-prod-card .btn-primary {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed); border: none; color: #fff;
+    box-shadow: 0 8px 24px rgba(139,92,246,.35); transition: all .22s;
+}
+.cadastro-prod-card .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(139,92,246,.5); }
+.cadastro-prod-card .btn-secondary {
+    background: transparent; border: 1px solid rgba(255,255,255,.15); color: var(--clr-text-2);
+    transition: all .22s;
+}
+.cadastro-prod-card .btn-secondary:hover { background: rgba(255,255,255,.05); color: var(--clr-text); }
+</style>
+
+<div class="cadastro-prod-page">
+    <div class="cadastro-prod-card">
+        <h1><i class="bi bi-controller me-2" style="color:#8b5cf6;"></i>Novo Jogo</h1>
+        <p class="subtitle">Adicione um novo título ao catálogo da RocketGames.</p>
+
+        <form asp-action="CadastroProduto" asp-controller="Produto" method="post">
+            <div class="mb-4">
+                <label asp-for="Nome" class="form-label">Nome do Jogo</label>
+                <input asp-for="Nome" class="form-control" placeholder="Ex: God of War Ragnarök" />
+            </div>
+            <div class="mb-4">
+                <label asp-for="Descricao" class="form-label">Descrição</label>
+                <textarea asp-for="Descricao" class="form-control" rows="3" placeholder="Descreva o jogo..."></textarea>
+            </div>
+            <div class="mb-4">
+                <label asp-for="Preco" class="form-label">Preço (R$)</label>
+                <input asp-for="Preco" type="number" step="0.01" class="form-control" placeholder="0,00" />
+            </div>
+            <div class="mb-4">
+                <label asp-for="Categoria" class="form-label">Categoria</label>
+                <input asp-for="Categoria" class="form-control" placeholder="Ex: Ação, RPG, Terror" />
+            </div>
+            <div class="d-flex gap-3 flex-wrap">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>Cadastrar Jogo
+                </button>
+                <a asp-controller="Cliente" asp-action="Jogos" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Voltar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

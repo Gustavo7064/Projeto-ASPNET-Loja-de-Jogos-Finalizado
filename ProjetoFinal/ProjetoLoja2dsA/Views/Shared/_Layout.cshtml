@@ -1,0 +1,297 @@
+@using Microsoft.AspNetCore.Http
+@{
+    var usuarioId = Context.Session.GetInt32("UsuarioId");
+    var usuarioLogado = usuarioId != null;
+    var nomeUsuario = Context.Session.GetString("NomeUsuario");
+    var avatarUrl = Context.Session.GetString("AvatarUrl")
+                    ?? Url.Content("~/img/avatar-default.png");
+    var role = Context.Session.GetString("UserRole") ?? "";
+    // Fallback: detecta funcionário pelo nome também
+    var _nome = Context.Session.GetString("NomeUsuario") ?? "";
+    if (role != "Funcionario" && _nome.Contains("Funcionario", StringComparison.OrdinalIgnoreCase))
+        role = "Funcionario";
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RocketGames</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- RocketGames CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/estilo.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Perfil.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ProjetoLoja2dsA.styles.css" asp-append-version="true" />
+
+    <style>
+        /* ── User menu dropdown fix ── */
+        .user-menu { position: relative; }
+        .user-menu-trigger {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            cursor: pointer !important;
+            color: var(--clr-text) !important;
+            padding: 6px 10px !important;
+            border-radius: var(--radius-sm) !important;
+            transition: background var(--transition);
+            text-decoration: none !important;
+        }
+        .user-menu-trigger:hover { background: rgba(139,92,246,.1); }
+        .user-avatar {
+            width: 34px; height: 34px; border-radius: 50%; object-fit: cover;
+            border: 2px solid rgba(139,92,246,.5);
+        }
+        .user-name { font-size: .88rem !important; font-weight: 600 !important; color: var(--clr-text) !important; }
+        .user-menu-dropdown {
+            min-width: 200px !important;
+            background: var(--clr-surface) !important;
+            border: 1px solid rgba(139,92,246,.2) !important;
+            border-radius: var(--radius-md) !important;
+            box-shadow: 0 20px 60px rgba(0,0,0,.7) !important;
+            padding: 8px !important;
+            margin-top: 8px !important;
+        }
+        .user-menu-item { padding: 0 !important; }
+        .user-menu-link {
+            display: flex; align-items: center;
+            padding: 10px 14px; border-radius: var(--radius-sm);
+            font-size: .88rem; color: var(--clr-text-2);
+            text-decoration: none;
+            transition: background var(--transition), color var(--transition);
+        }
+        .user-menu-link:hover { background: rgba(139,92,246,.12); color: var(--clr-text); }
+        .dropdown-divider { border-color: rgba(255,255,255,.08) !important; margin: 4px 6px !important; }
+        .user-menu-logout {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: .88rem;
+            cursor: pointer;
+            color: #fc8181;
+            font-weight: 600;
+            background: transparent;
+            border: none;
+            text-align: left;
+            font-family: var(--ff-body);
+            box-shadow: none;
+            outline: none;
+            transition: background .2s;
+            box-sizing: border-box;
+        }
+        .user-menu-logout:hover { background: rgba(239,68,68,.1); }
+        .user-menu-logout:focus { outline: none; box-shadow: none; }
+        .cart-wrapper { position: relative; display: inline-block; }
+        .cart-badge {
+            position: absolute; top: -7px; right: -10px;
+            min-width: 18px; height: 18px; padding: 0 4px;
+            font-size: .68rem; font-weight: 700; line-height: 18px;
+            text-align: center; border-radius: 999px;
+            background: var(--clr-accent); color: #fff; display: none;
+        }
+        .cart-icon { color: var(--clr-neon) !important; font-size: 1.35rem !important; }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+
+                <!-- LOGO -->
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">RocketGames</a>
+
+                <!-- BOTÃO MOBILE -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- NAV CONTENT -->
+                <div class="collapse navbar-collapse" id="mainNavbar">
+
+                    <!-- ESQUERDA -->
+                    <ul class="navbar-nav me-auto align-items-lg-center gap-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Início</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Cliente" asp-action="Jogos">Jogos</a>
+                        </li>
+                        @if (role == "Funcionario")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Funcionario" asp-action="AreaFuncionario">
+                                    <i class="bi bi-person-badge me-1"></i>Área Funcionário
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    <!-- DIREITA -->
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+
+                        @if (!string.IsNullOrEmpty(nomeUsuario))
+                        {
+                            <!-- LINK DIRETO PERFIL (sempre visível) -->
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Usuario" asp-action="Perfil"
+                                   style="font-size:.85rem;font-weight:600;color:var(--clr-neon)!important;">
+                                    <i class="bi bi-person-circle me-1"></i>Meu Perfil
+                                </a>
+                            </li>
+
+                            <!-- DROPDOWN DO USUÁRIO -->
+                            <li class="nav-item dropdown user-menu">
+                                <a class="nav-link user-menu-trigger dropdown-toggle"
+                                   href="#" role="button"
+                                   data-bs-toggle="dropdown"
+                                   data-bs-auto-close="true"
+                                   aria-expanded="false">
+                                    <img src="@avatarUrl" alt="Avatar" class="user-avatar" />
+                                    <span class="user-name">@nomeUsuario</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end user-menu-dropdown">
+                                    <li class="user-menu-item">
+                                        <a class="user-menu-link" asp-controller="Usuario" asp-action="Perfil">
+                                            <i class="bi bi-person me-2"></i>Ver Perfil
+                                        </a>
+                                    </li>
+                                    <li class="user-menu-item">
+                                        <a class="user-menu-link" asp-controller="Usuario" asp-action="Editar">
+                                            <i class="bi bi-pencil-square me-2"></i>Editar / Alterar Senha
+                                        </a>
+                                    </li>
+                                    @if (role == "Funcionario")
+                                    {
+                                        <li class="user-menu-item">
+                                            <a class="user-menu-link" asp-controller="Funcionario" asp-action="AreaFuncionario">
+                                                <i class="bi bi-person-badge me-2"></i>Área Funcionário
+                                            </a>
+                                        </li>
+                                    }
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li class="user-menu-item">
+                                        <form asp-controller="Usuario" asp-action="Logout" method="post" style="margin:0;padding:0;">
+                                            <button type="submit" class="user-menu-logout">
+                                                <i class="bi bi-box-arrow-right me-2"></i>Sair da conta
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" id="Login" asp-controller="Usuario" asp-action="Login">Entrar</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="Cadastro" asp-controller="Usuario" asp-action="Cadastro">Criar Conta</a>
+                            </li>
+                        }
+
+                        <!-- CARRINHO -->
+                        <li class="nav-item ms-2">
+                            <a class="nav-link d-flex align-items-center" asp-controller="Home" asp-action="Carrinho">
+                                <span class="cart-wrapper">
+                                    <i class="bi bi-bag cart-icon"></i>
+                                    <span id="cart-count-badge" class="cart-badge">0</span>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-content-wrapper">
+        @if (IsSectionDefined("NoContainer"))
+        {
+            <main role="main" class="no-container-main">
+                @RenderBody()
+            </main>
+        }
+        else
+        {
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        }
+    </div>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner"> 
+            <!-- TOP: logo + nav -->
+            <div class="sf-top">
+                <div class="sf-brand">
+                    <span class="sf-logo">RocketGames</span>
+                    <p class="sf-tagline">Sua loja gamer favorita.</p>
+                </div>
+                <nav class="sf-nav" aria-label="Rodapé">
+                    <div class="sf-nav-group">
+                        <span class="sf-nav-title">Loja</span>
+                        <a asp-controller="Home" asp-action="Index">Início</a>
+                        <a asp-controller="Cliente" asp-action="Jogos">Jogos</a>
+                        <a asp-controller="Home" asp-action="Carrinho">Carrinho</a>
+                    </div>
+                    <div class="sf-nav-group">
+                        <span class="sf-nav-title">Conta</span>
+                        <a asp-controller="Usuario" asp-action="Login">Entrar</a>
+                        <a asp-controller="Usuario" asp-action="Cadastro">Criar conta</a>
+                        <a asp-controller="Usuario" asp-action="Perfil">Meu perfil</a>
+                    </div>
+                </nav>
+            </div>
+            <!-- BOTTOM: copyright -->
+            <div class="sf-bottom">
+                <span>© @DateTime.Now.Year RocketGames. Todos os direitos reservados.</span>
+                <span class="sf-made">Feito com 🎮 para gamers</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        window.usuarioLogado = @(usuarioLogado.ToString().ToLower());
+        window.usuarioId = @(usuarioId ?? 0);
+
+        // Garante que o dropdown Bootstrap funciona corretamente
+        document.addEventListener('DOMContentLoaded', function () {
+            var dropdownTriggers = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+            dropdownTriggers.forEach(function (el) {
+                el.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+                new bootstrap.Dropdown(el);
+            });
+        });
+    </script>
+    <script src="~/js/carrinho.js"></script>
+</body>
+</html>

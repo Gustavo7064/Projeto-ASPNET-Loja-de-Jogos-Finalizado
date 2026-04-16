@@ -1,0 +1,143 @@
+/* ================================================================
+   ROCKETGAMES — carrinho.css
+   ================================================================ */
+
+.carrinho-container { max-width: 1100px; margin: 0 auto; padding: 48px 20px; }
+.carrinho-container h1 {
+  font-family: var(--ff-display);
+  font-size: clamp(24px,4vw,34px);
+  font-weight: 800;
+  color: var(--clr-text);
+  margin-bottom: 28px;
+}
+
+/* ── Card ── */
+.carrinho-card {
+  background: var(--clr-surface) !important;
+  border: 1px solid rgba(139,92,246,.1);
+  border-radius: 22px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.5);
+  overflow: hidden;
+  transition: box-shadow .3s ease;
+}
+.carrinho-card:hover { box-shadow: 0 24px 60px rgba(0,0,0,.65); }
+
+/* card-body do Bootstrap não pode ficar branco */
+.carrinho-card .card-body {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* ── Table — zera TODOS os estilos brancos do Bootstrap ── */
+.carrinho-card .table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  background: transparent !important;
+  color: var(--clr-text) !important;
+  --bs-table-bg: transparent !important;
+  --bs-table-striped-bg: transparent !important;
+  --bs-table-hover-bg: rgba(139,92,246,.06) !important;
+  --bs-table-color: var(--clr-text) !important;
+  --bs-table-border-color: rgba(255,255,255,.05) !important;
+}
+
+.carrinho-card .table thead {
+  background: rgba(139,92,246,.06) !important;
+}
+
+.carrinho-card .table th {
+  font-family: var(--ff-display);
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--clr-text-3) !important;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  background: transparent !important;
+}
+
+.carrinho-card .table td {
+  padding: 16px 20px;
+  color: var(--clr-text) !important;
+  border-bottom: 1px solid rgba(255,255,255,.04) !important;
+  vertical-align: middle;
+  background: transparent !important;
+}
+
+.carrinho-card .table tbody tr { background: transparent !important; }
+.carrinho-card .table tbody tr:last-child td { border-bottom: none !important; }
+.carrinho-card .table tbody tr:hover td {
+  background: rgba(139,92,246,.06) !important;
+}
+
+/* ── Botão remover dentro da tabela ── */
+#cart-body .btn-link {
+  background: transparent !important;
+  border: none !important;
+  color: #fc8181 !important;
+  padding: 4px 8px !important;
+  font-size: 1rem !important;
+  transition: color .2s, transform .2s;
+}
+#cart-body .btn-link:hover {
+  color: #ef4444 !important;
+  transform: scale(1.2);
+}
+
+/* ── Empty state ── */
+#cart-body td[colspan] {
+  text-align: center;
+  color: var(--clr-text-3);
+  padding: 56px 20px;
+  font-size: 1rem;
+  background: transparent !important;
+}
+
+/* ── Rodapé do carrinho ── */
+.cart-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 28px; padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  flex-wrap: wrap; gap: 16px;
+}
+.total-area { display: flex; align-items: baseline; gap: 10px; }
+.total-label {
+  font-size: .9rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .06em; color: var(--clr-text-3);
+}
+.total-value {
+  font-family: var(--ff-display);
+  font-size: 1.6rem; font-weight: 800; color: var(--clr-text);
+}
+.buttons-area { display: flex; gap: 12px; flex-wrap: wrap; }
+.buttons-area .btn { transition: all .25s ease; }
+.buttons-area .btn:hover { transform: translateY(-2px); }
+#btn-finalizar:disabled { opacity: .35; cursor: not-allowed; transform: none !important; }
+
+/* ── Botões ── */
+.btn-primary {
+  background: linear-gradient(135deg, var(--clr-accent), var(--clr-accent-2)) !important;
+  border: none !important;
+  box-shadow: 0 6px 20px rgba(139,92,246,.4) !important;
+  color: #fff !important;
+}
+.btn-primary:hover:not(:disabled) { box-shadow: 0 10px 32px rgba(139,92,246,.6) !important; }
+
+.btn-outline-light {
+  border: 1px solid rgba(255,255,255,.18) !important;
+  color: var(--clr-text-2) !important;
+  background: transparent !important;
+}
+.btn-outline-light:hover {
+  background: rgba(255,255,255,.06) !important;
+  border-color: rgba(139,92,246,.4) !important;
+  color: var(--clr-text) !important;
+}
+
+@media (max-width: 640px) {
+  .cart-footer { flex-direction: column; align-items: flex-start; }
+  .buttons-area { width: 100%; flex-direction: column; }
+  .buttons-area .btn { width: 100%; justify-content: center; }
+}

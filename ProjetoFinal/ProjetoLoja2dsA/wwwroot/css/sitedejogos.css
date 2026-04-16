@@ -1,0 +1,215 @@
+/* ================================================================
+   ROCKETGAMES — sitedejogos.css  (catálogo de jogos)
+   ================================================================ */
+
+/* ── Blobs ── */
+.bg-blobs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.bg-blobs .blob { position: absolute; border-radius: 50%; filter: blur(110px); mix-blend-mode: screen; }
+.b1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(109,40,217,.2), transparent 70%); top: -150px; left: -150px; }
+.b2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(139,92,246,.14), transparent 70%); bottom: -180px; right: -120px; }
+.b3 { width: 350px; height: 350px; background: radial-gradient(circle, rgba(76,29,149,.12), transparent 70%); top: 38%; left: 55%; }
+
+/* ── Página ── */
+.dg-page { position: relative; z-index: 1; min-height: 100vh; }
+
+/* ── Hero compacto ── */
+.hero {
+  padding: 56px clamp(20px,4vw,60px) 0;
+  max-width: 1400px; margin: 0 auto;
+}
+.hero-copy h1 {
+  font-family: var(--ff-display);
+  font-size: clamp(28px,4.5vw,52px);
+  font-weight: 800; letter-spacing: -.02em;
+  color: var(--clr-text); margin-bottom: 8px;
+}
+.hero-copy p { color: var(--clr-text-2); font-size: 1rem; line-height: 1.6; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 8px 18px; border-radius: var(--radius-full);
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.04);
+  color: var(--clr-text-2); font-size: .85rem; font-weight: 500;
+  cursor: pointer; transition: all var(--transition);
+  font-family: var(--ff-body);
+}
+.chip:hover { border-color: rgba(139,92,246,.4); color: var(--clr-text); background: rgba(139,92,246,.08); }
+.chip.is-active {
+  background: linear-gradient(135deg, var(--clr-accent), var(--clr-accent-2));
+  border-color: transparent; color: #fff;
+  box-shadow: 0 4px 16px rgba(139,92,246,.35);
+}
+
+/* ── Toolbar ── */
+.dg-toolbar {
+  max-width: 1400px; margin: 32px auto 0;
+  padding: 20px clamp(20px,4vw,60px);
+  background: var(--clr-surface);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 18px;
+  display: flex; flex-wrap: wrap; align-items: flex-end;
+  gap: 16px; justify-content: space-between;
+  position: relative; z-index: 2;
+  margin-left: clamp(20px,4vw,60px); margin-right: clamp(20px,4vw,60px);
+}
+.toolbar-left, .toolbar-right {
+  display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end;
+}
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label, .field .legend {
+  font-size: .75rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--clr-text-3);
+}
+.field input[type="search"],
+.field select {
+  padding: 9px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.04);
+  color: var(--clr-text);
+  font-family: var(--ff-body); font-size: .88rem;
+  outline: none; cursor: pointer;
+  transition: border-color var(--transition), background var(--transition);
+  min-width: 160px;
+}
+.field input[type="search"]::placeholder { color: var(--clr-text-3); }
+.field input[type="search"]:focus,
+.field select:focus {
+  border-color: rgba(139,92,246,.5);
+  background: rgba(139,92,246,.06);
+  box-shadow: 0 0 0 3px rgba(139,92,246,.12);
+}
+.field select option { background: var(--clr-surface); color: var(--clr-text); }
+
+.field.checkset { flex-direction: column; gap: 6px; }
+.field.checkset label {
+  display: flex; align-items: center; gap: 7px;
+  font-size: .85rem; font-weight: 400; text-transform: none;
+  letter-spacing: 0; color: var(--clr-text-2); cursor: pointer;
+}
+.field.checkset input[type="checkbox"] {
+  width: 15px; height: 15px; border-radius: 4px;
+  accent-color: var(--clr-accent); cursor: pointer;
+}
+
+.field.range { min-width: 160px; }
+.field.range input[type="range"] {
+  -webkit-appearance: none; width: 100%; height: 4px;
+  background: rgba(255,255,255,.1); border-radius: var(--radius-full);
+  outline: none; cursor: pointer;
+}
+.field.range input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--clr-accent); box-shadow: 0 0 8px rgba(139,92,246,.5);
+  cursor: pointer; transition: transform .15s;
+}
+.field.range input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+#f-price-value { font-size: .82rem; color: var(--clr-neon); font-weight: 600; }
+
+/* ── Main / Grid ── */
+.dg-main {
+  max-width: 1400px; margin: 32px auto;
+  padding: 0 clamp(20px,4vw,60px);
+  position: relative; z-index: 1;
+}
+.list-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.list-head h2 { font-family: var(--ff-display); font-size: 1.2rem; font-weight: 700; }
+.count {
+  font-size: .82rem; font-weight: 600; color: var(--clr-text-3);
+  padding: 5px 12px; border-radius: var(--radius-full);
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
+}
+
+/* Game Grid */
+.dg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* ── Game Card (catálogo) ── */
+.game-card {
+  position: relative; background: var(--clr-surface);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 18px; overflow: hidden;
+  transition: all var(--transition);
+  display: flex; flex-direction: column;
+}
+.game-card .thumb { position: relative; flex-shrink: 0; overflow: hidden; }
+.game-card .thumb img,
+.game-card .imagens-jogos {
+  width: 100%; height: 200px; object-fit: cover;
+  display: block; border-radius: 0;
+  transition: transform .35s ease, filter .35s ease;
+}
+.game-card:hover .thumb img,
+.game-card:hover .imagens-jogos { transform: scale(1.06); filter: brightness(1.1); }
+
+.game-card .badge {
+  position: absolute; top: 10px; left: 10px;
+  padding: 4px 10px; border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--clr-accent), var(--clr-accent-2));
+  color: #fff; font-size: .75rem; font-weight: 800;
+  letter-spacing: .04em; box-shadow: 0 4px 12px rgba(139,92,246,.5);
+}
+.game-card .wish {
+  position: absolute; top: 8px; right: 8px;
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(6,6,15,.7); backdrop-filter: blur(8px);
+  color: var(--clr-text-3); font-size: .9rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition); opacity: 0;
+}
+.game-card:hover .wish { opacity: 1; }
+.game-card .wish:hover { color: #f87171; border-color: rgba(248,113,113,.4); background: rgba(248,113,113,.1); }
+.game-card .wish.is-active { color: #f87171; opacity: 1; }
+
+.game-card .info { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.game-card .title { font-family: var(--ff-display); font-size: .95rem; font-weight: 700; color: var(--clr-text); }
+.game-card .meta { font-size: .78rem; color: var(--clr-text-3); }
+.game-card .price { display: flex; align-items: center; gap: 8px; }
+.game-card .current {
+  font-family: var(--ff-display); font-size: 1rem;
+  font-weight: 800; color: var(--clr-text);
+}
+.game-card .original { font-size: .85rem; color: var(--clr-text-3); text-decoration: line-through; }
+.game-card .stars { display: flex; gap: 2px; margin: 2px 0; }
+.game-card .stars i {
+  width: 12px; height: 12px; display: inline-block; border-radius: 1px;
+  background: var(--clr-accent); clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  opacity: .9;
+}
+.game-card .stars i.half { opacity: .35; }
+.game-card .btn.add-cart {
+  margin-top: auto; width: 100%;
+  background: linear-gradient(135deg, var(--clr-accent), var(--clr-accent-2));
+  color: #fff; border: none; border-radius: var(--radius-sm);
+  padding: 10px 16px; font-size: .83rem; font-weight: 600;
+  cursor: pointer; transition: all var(--transition);
+  box-shadow: 0 4px 14px rgba(139,92,246,.3);
+}
+.game-card .btn.add-cart:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(139,92,246,.5); }
+
+/* Card hover state */
+.game-card:hover {
+  border-color: rgba(139,92,246,.35);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,.6), 0 0 24px rgba(139,92,246,.1);
+}
+
+/* Hidden card */
+.game-card.is-hidden { display: none; }
+
+@media (max-width: 960px) {
+  .dg-toolbar { margin-left: 20px; margin-right: 20px; }
+  .toolbar-left, .toolbar-right { flex-wrap: wrap; }
+}
+@media (max-width: 640px) {
+  .dg-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .game-card .thumb img, .game-card .imagens-jogos { height: 150px; }
+  .dg-toolbar { flex-direction: column; align-items: flex-start; gap: 12px; }
+}

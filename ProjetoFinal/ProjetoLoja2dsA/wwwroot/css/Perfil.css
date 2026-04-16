@@ -1,0 +1,147 @@
+/* ================================================================
+   ROCKETGAMES — Perfil.css  (completo + design premium)
+   ================================================================ */
+
+.perfil-root {
+  min-height: calc(100vh - 68px);
+  padding: 40px 0 80px;
+}
+.perfil-container { max-width: 900px; }
+
+/* ── Header ── */
+.perfil-header {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+  padding: 32px 32px 28px;
+  background: var(--clr-surface);
+  border: 1px solid rgba(139,92,246,.12);
+  border-radius: 22px; margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+.perfil-user-info { display: flex; align-items: center; gap: 20px; }
+.perfil-avatar-ring {
+  padding: 3px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--clr-accent), var(--clr-neon));
+  box-shadow: 0 0 24px rgba(139,92,246,.35);
+}
+.perfil-avatar-img {
+  width: 72px; height: 72px; border-radius: 50%; object-fit: cover;
+  display: block; border: 3px solid var(--clr-bg);
+}
+.perfil-header-text { display: flex; flex-direction: column; gap: 4px; }
+.perfil-username {
+  font-family: var(--ff-display); font-size: 1.4rem; font-weight: 800; margin-bottom: 4px;
+}
+.perfil-subtitle { color: var(--clr-text-2); font-size: .88rem; margin-bottom: 4px; }
+.perfil-status-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 999px;
+  background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.2);
+  font-size: .78rem; font-weight: 600; color: #86efac;
+}
+.perfil-status-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,.8);
+  animation: statusPulse 2s ease-in-out infinite;
+}
+@keyframes statusPulse { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+
+/* Botão Sair */
+.btn-perfil-outline {
+  padding: 9px 20px; border-radius: 999px;
+  border: 1px solid rgba(239,68,68,.3); background: transparent;
+  color: #fc8181; font-family: var(--ff-body); font-size: .88rem;
+  font-weight: 600; cursor: pointer; transition: all .22s ease;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-perfil-outline:hover { background: rgba(239,68,68,.1); border-color: #ef4444; }
+
+/* ── Conteúdo principal ── */
+.perfil-content {
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Cards ── */
+.perfil-card {
+  background: var(--clr-surface);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  margin-bottom: 0;
+}
+.perfil-card-main { border-color: rgba(139,92,246,.12); }
+.perfil-card-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 24px; font-weight: 700; font-size: .9rem;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  color: var(--clr-text-2);
+  background: rgba(139,92,246,.04);
+}
+.perfil-card-body { padding: 8px 0; }
+
+/* Campos */
+.perfil-field {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 24px; border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.perfil-field:last-of-type { border-bottom: none; }
+.perfil-field-label { font-size: .82rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--clr-text-3); }
+.perfil-field-value { font-size: .95rem; color: var(--clr-text); font-weight: 500; }
+.perfil-meta-badge {
+  padding: 4px 12px; border-radius: 999px;
+  background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.2);
+  font-size: .78rem; font-weight: 700; color: #86efac;
+}
+.perfil-actions { padding: 16px 24px; }
+
+/* Botão Editar */
+.btn-perfil-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 24px; border-radius: 999px;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: #fff; font-family: var(--ff-display); font-size: .88rem; font-weight: 700;
+  text-decoration: none; box-shadow: 0 8px 24px rgba(139,92,246,.35);
+  transition: all .22s ease;
+}
+.btn-perfil-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(139,92,246,.5); color: #fff; }
+
+/* ── Grid inferior (Segurança / Experiência) ── */
+.perfil-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Texto e links internos dos cards */
+.perfil-text {
+  font-size: .88rem; color: var(--clr-text-2);
+  line-height: 1.65; margin-bottom: 12px;
+  padding: 0 24px;
+}
+.perfil-link {
+  display: inline-block;
+  margin: 0 24px 16px;
+  font-size: .85rem; color: var(--clr-neon);
+  text-decoration: none; font-weight: 600;
+  transition: color .2s;
+}
+.perfil-link:hover { color: #fff; text-decoration: underline; }
+
+/* Tag "Em desenvolvimento" */
+.perfil-tag {
+  display: inline-flex; align-items: center;
+  margin: 0 24px 16px;
+  padding: 4px 12px; border-radius: 999px;
+  background: rgba(59,130,246,.12); border: 1px solid rgba(59,130,246,.2);
+  color: #bfdbfe; font-size: .75rem; font-weight: 600;
+}
+
+/* ── Responsividade ── */
+@media (max-width: 768px) {
+  .perfil-header { flex-direction: column; align-items: flex-start; }
+  .perfil-bottom-grid { grid-template-columns: 1fr; }
+  .perfil-container { padding: 0 16px; }
+}

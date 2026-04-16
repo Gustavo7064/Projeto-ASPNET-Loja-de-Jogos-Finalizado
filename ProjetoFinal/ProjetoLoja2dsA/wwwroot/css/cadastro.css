@@ -1,0 +1,12 @@
+/* ================================================================
+   ROCKETGAMES — cadastro.css  (herda estilo.css, apenas overrides)
+   ================================================================ */
+
+/* Remove estilos antigos problemáticos */
+.navbar.bg-white, .navbar.border-bottom {
+  background: rgba(6,6,15,.92) !important;
+  border-bottom: 1px solid rgba(139,92,246,.1) !important;
+}
+.navbar .navbar-brand, .navbar .nav-link { color: var(--clr-text-2) !important; }
+footer.border-top, .footer.border-top { border-top: 1px solid rgba(255,255,255,.06) !important; }
+.navbar { background-color: rgba(6,6,15,.92) !important; }

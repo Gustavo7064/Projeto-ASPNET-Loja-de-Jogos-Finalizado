@@ -1,0 +1,104 @@
+@model List<ProjetoLoja2dsA.Models.Usuario>
+@{
+    ViewData["Title"] = "Usuários Cadastrados";
+}
+
+<style>
+.lista-page { padding: 40px 0 80px; }
+.lista-header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+.lista-header h1 { font-family: var(--ff-display); font-size: clamp(22px,3vw,30px); font-weight: 800; }
+.lista-header p { color: var(--clr-text-2); font-size: .88rem; margin-top: 4px; }
+.lista-count {
+    padding: 6px 16px; border-radius: 999px;
+    background: rgba(139,92,246,.08); border: 1px solid rgba(139,92,246,.2);
+    font-size: .82rem; font-weight: 700; color: var(--clr-neon);
+    white-space: nowrap; align-self: flex-start;
+}
+.lista-table-wrap {
+    background: var(--clr-surface); border: 1px solid rgba(255,255,255,.06);
+    border-radius: 20px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.4);
+}
+.lista-table { width: 100%; border-collapse: collapse; }
+.lista-table thead tr { background: rgba(139,92,246,.06); }
+.lista-table th {
+    padding: 14px 20px; text-align: left;
+    font-family: var(--ff-display); font-size: .75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .08em; color: var(--clr-text-3);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.lista-table td { padding: 14px 20px; color: var(--clr-text); border-bottom: 1px solid rgba(255,255,255,.04); font-size: .9rem; }
+.lista-table tbody tr:last-child td { border-bottom: none; }
+.lista-table tbody tr:hover td { background: rgba(139,92,246,.04); }
+.badge-id {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    background: rgba(139,92,246,.1); border: 1px solid rgba(139,92,246,.2);
+    font-size: .78rem; font-weight: 800; color: var(--clr-neon);
+}
+.badge-role {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.2);
+    font-size: .78rem; font-weight: 700; color: #86efac;
+}
+.empty-state { text-align: center; padding: 64px 20px; color: var(--clr-text-3); }
+.empty-state .empty-icon { font-size: 3rem; margin-bottom: 16px; }
+.back-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-bottom: 20px; padding: 9px 20px; border-radius: 999px;
+    border: 1px solid rgba(139,92,246,.3); background: transparent;
+    color: var(--clr-neon); font-size: .88rem; font-weight: 600;
+    text-decoration: none; transition: all .22s;
+}
+.back-btn:hover { background: rgba(139,92,246,.1); color: #fff; }
+</style>
+
+<div class="container lista-page">
+
+    <a asp-controller="Funcionario" asp-action="AreaFuncionario" class="back-btn">
+        <i class="bi bi-arrow-left"></i> Voltar à Área do Funcionário
+    </a>
+
+    <div class="lista-header">
+        <div>
+            <h1><i class="bi bi-people me-3" style="color:var(--clr-accent);"></i>Usuários Cadastrados</h1>
+            <p>Todas as contas criadas na plataforma RocketGames.</p>
+        </div>
+        @if (Model != null && Model.Any())
+        {
+            <span class="lista-count">@Model.Count usuário(s)</span>
+        }
+    </div>
+
+    <div class="lista-table-wrap">
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-icon">👤</div>
+                <p>Nenhum usuário cadastrado até o momento.</p>
+            </div>
+        }
+        else
+        {
+            <table class="lista-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Perfil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var u in Model)
+                    {
+                        <tr>
+                            <td><span class="badge-id">#@u.Id</span></td>
+                            <td>@u.Nome</td>
+                            <td style="color:var(--clr-text-2);">@u.Email</td>
+                            <td><span class="badge-role">@(u.Role ?? "Cliente")</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
